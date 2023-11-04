@@ -8,12 +8,12 @@
 
 BUILD_DATE="$(date -u +'%Y-%m-%d')"
 
-SHOULD_BUILD_BASE="$(grep -m 1 build_base build.yml | grep -o -P '(?<=").*(?=")')"
-SHOULD_BUILD_SPARK="$(grep -m 1 build_spark build.yml | grep -o -P '(?<=").*(?=")')"
-SHOULD_BUILD_JUPYTERLAB="$(grep -m 1 build_jupyter build.yml | grep -o -P '(?<=").*(?=")')"
+SHOULD_BUILD_BASE="true"
+SHOULD_BUILD_SPARK="true"
+SHOULD_BUILD_JUPYTERLAB="true"
 
-SPARK_VERSION="$(grep -m 1 spark build.yml | grep -o -P '(?<=").*(?=")')"
-JUPYTERLAB_VERSION="$(grep -m 1 jupyterlab build.yml | grep -o -P '(?<=").*(?=")')"
+SPARK_VERSION="3.0.0"
+JUPYTERLAB_VERSION="3.0.0"
 
 SPARK_VERSION_MAJOR=${SPARK_VERSION:0:1}
 
@@ -95,6 +95,7 @@ function buildImages() {
     docker build \
       --build-arg build_date="${BUILD_DATE}" \
       --build-arg scala_version="${SCALA_VERSION}" \
+      --platform linux/arm64/v8 \
       -f docker/base/Dockerfile \
       -t base:latest .
   fi
